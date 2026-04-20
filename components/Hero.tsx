@@ -21,24 +21,23 @@ const Hero: React.FC<HeroProps> = ({ onAdmissionClick }) => {
     loadSettings();
   }, []);
   return (
-    <section className="relative min-h-screen flex items-center bg-gradient-to-br from-[#0F172A] via-[#0A0F1E] to-blue-900 pt-16 sm:pt-20 overflow-hidden">
+    <section className="relative h-screen min-h-[100dvh] flex items-center bg-[#0F172A] pt-16 sm:pt-20 overflow-hidden">
       <div className="absolute inset-0 z-0 overflow-hidden select-none">
-        <div className="absolute inset-0 transform scale-105 overflow-hidden">
+        <div className="absolute inset-0 overflow-hidden">
           <iframe
-            width="100%"
-            height="100%"
             src="https://www.youtube.com/embed/joyPbz8Qbjs?si=94IZnghY31EzmQYT&autoplay=1&mute=1&loop=1&playlist=joyPbz8Qbjs&controls=0&rel=0&modestbranding=1"
             title="SMAN 2 Tompaso Background"
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             referrerPolicy="strict-origin-when-cross-origin"
             allowFullScreen
-            className="absolute top-0 left-0 w-full h-full border-none"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[177.78vh] h-[100dvh] min-w-full min-h-full border-none pointer-events-none scale-110 sm:scale-105"
           />
         </div>
-        <div className="absolute inset-0 bg-[#0A0F1E]/15 z-10"></div>
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0A0F1E] via-[#0A0F1E]/80 to-blue-900/30 z-20"></div>
+        <div className="absolute inset-0 bg-[#0A0F1E]/20 z-10"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0A0F1E]/60 via-[#0A0F1E]/30 to-transparent z-20"></div>
         <div className="absolute inset-0 bg-gradient-to-t from-[#FDFCFB] via-transparent to-transparent z-20"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0A0F1E]/40 via-transparent to-transparent z-20"></div>
         <div className="absolute inset-0 md:inset-auto md:top-0 md:left-1/4 md:w-[50%] md:h-[30%] bg-white/5 blur-[120px] rounded-full z-15 pointer-events-none"></div>
       </div>
       
@@ -69,13 +68,13 @@ const Hero: React.FC<HeroProps> = ({ onAdmissionClick }) => {
 
             {/* Premium Bold Motto */}
             <div className="space-y-0">
-              <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-white uppercase tracking-tighter leading-[0.9]">
+              <h1 className="text-4xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-white uppercase tracking-tighter leading-[0.9]">
                 Cerdas
               </h1>
-              <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-white uppercase tracking-tighter leading-[0.9]">
+              <h1 className="text-4xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-white uppercase tracking-tighter leading-[0.9]">
                 Terampil
               </h1>
-              <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-[#C5A059] uppercase tracking-tighter leading-[0.9]">
+              <h1 className="text-4xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-[#C5A059] uppercase tracking-tighter leading-[0.9]">
                 Bermartabat
               </h1>
             </div>
