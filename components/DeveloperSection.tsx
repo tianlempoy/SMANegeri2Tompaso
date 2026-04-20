@@ -222,17 +222,15 @@ const DeveloperSection: React.FC = () => {
         <div className="mb-64 reveal active">
           <div className="relative rounded-[60px] lg:rounded-[100px] overflow-hidden min-h-[600px] lg:h-[800px] shadow-4xl group border border-white/10">
             {/* Video Background */}
-            <div className="absolute inset-0 z-0">
-              <video 
-                autoPlay 
-                muted 
-                loop 
-                playsInline
-                className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-all duration-1000 group-hover:scale-110"
-                poster={SCHOOL_ASSETS.HERO_BUILDING}
-              >
-                <source src="/videos/menu.MP4" type="video/mp4" />
-              </video>
+            <div className="absolute inset-0 z-0 overflow-hidden" style={{ pointerEvents: 'none' }}>
+              <iframe
+                src="https://www.youtube.com/embed/joyPbz8Qbjs?si=94IZnghY31EzmQYT&autoplay=1&mute=1&loop=1&playlist=joyPbz8Qbjs&controls=0&rel=0&modestbranding=1"
+                title="SMAN 2 Tompaso Discovery"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[177.78%] h-[177.78%] min-w-full min-h-full opacity-60 group-hover:opacity-100 transition-all duration-1000 group-hover:scale-110"
+              />
               <div className="absolute inset-0 bg-gradient-to-t from-[#05070A] via-[#05070A]/40 to-transparent z-10"></div>
               <div className="absolute inset-0 bg-[#05070A]/30 z-10 group-hover:bg-transparent transition-colors"></div>
             </div>
