@@ -54,10 +54,10 @@ const VirtualTour: React.FC = () => {
              <div className="relative rounded-[60px] lg:rounded-[100px] overflow-hidden aspect-[16/10] shadow-2xl group border border-slate-100 bg-black">
                {/* YouTube iframe cover */}
                <div className="absolute inset-0 overflow-hidden" style={{ pointerEvents: 'none' }}>
-                 <iframe
+               <iframe
                    width="560"
                    height="315"
-                   src="https://www.youtube.com/embed/joyPbz8Qbjs?si=BFfFG2TpSyDjESV4&autoplay=1&mute=1&loop=1&playlist=joyPbz8Qbjs&controls=0&rel=0&modestbranding=1"
+                   src="https://www.youtube.com/embed/joyPbz8Qbjs?si=94IZnghY31EzmQYT&autoplay=1&mute=1&loop=1&playlist=joyPbz8Qbjs&controls=0&rel=0&modestbranding=1"
                    title="Virtual Tour SMAN 2 Tompaso"
                    frameBorder="0"
                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
