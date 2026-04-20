@@ -23,7 +23,7 @@ const Hero: React.FC<HeroProps> = ({ onAdmissionClick }) => {
   return (
     <section className="relative min-h-screen flex items-center bg-gradient-to-br from-[#0F172A] via-[#0A0F1E] to-blue-900 pt-16 sm:pt-20 overflow-hidden">
       <div className="absolute inset-0 z-0 overflow-hidden select-none">
-        <div className="absolute inset-0 transform scale-105">
+        <div className="absolute inset-0 transform scale-105" style={{ overflow: 'hidden' }}>
           <iframe
             width="100%"
             height="100%"
@@ -35,15 +35,11 @@ const Hero: React.FC<HeroProps> = ({ onAdmissionClick }) => {
             allowFullScreen
             style={{
               position: 'absolute',
-              top: '50%',
-              left: '50%',
-              width: '177.78%',
-              height: '177.78%',
-              minWidth: '100%',
-              minHeight: '100%',
-              transform: 'translate(-50%, -50%)',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
               border: 'none',
-              opacity: 0.9
             }}
           />
         </div>
@@ -136,3 +132,4 @@ const Hero: React.FC<HeroProps> = ({ onAdmissionClick }) => {
 };
 
 export default Hero;
+
