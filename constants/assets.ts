@@ -65,3 +65,11 @@ export const SCHOOL_ASSETS = {
   // Model Sovereign Section - Path yang benar (tanpa "public/")
   SOVEREIGN_MODEL: '/model/model.png'
 };
+
+
+  // PPDB Background
+  PPDB_BG: '/ppdb-bg.png',
+  
+  // Model Sovereign Section - Path yang benar (tanpa "public/")
+  SOVEREIGN_MODEL: '/model/model.png'
+};
