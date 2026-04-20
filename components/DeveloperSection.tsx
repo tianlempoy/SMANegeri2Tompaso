@@ -63,7 +63,7 @@ const DeveloperSection: React.FC = () => {
             <div className="max-w-4xl">
               <div className="inline-flex items-center space-x-4 mb-10">
                 <div className="h-px w-12 bg-[#C5A059]"></div>
-                <span className="text-[#C5A059] text-[12px] font-black uppercase tracking-[0.8em]">Surat Dedikasi & Apresiasi</span>
+                <span className="text-[#C5A059] text-[12px] font-black uppercase tracking-[0.8em]">Surat Dari Pengembang</span>
               </div>
               <h1 className="text-[12vw] lg:text-[140px] font-medium text-white tracking-tighter leading-[0.75] mb-12">
                 Terima Kasih <br /> <span className="text-[#C5A059] italic font-light lowercase text-[10vw]">smandutop.</span>
