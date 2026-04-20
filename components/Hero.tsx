@@ -23,7 +23,7 @@ const Hero: React.FC<HeroProps> = ({ onAdmissionClick }) => {
   return (
     <section className="relative min-h-screen flex items-center bg-gradient-to-br from-[#0F172A] via-[#0A0F1E] to-blue-900 pt-16 sm:pt-20 overflow-hidden">
       <div className="absolute inset-0 z-0 overflow-hidden select-none">
-        <div className="absolute inset-0 transform scale-105" style={{ overflow: 'hidden' }}>
+        <div className="absolute inset-0 transform scale-105 overflow-hidden">
           <iframe
             width="100%"
             height="100%"
@@ -33,14 +33,7 @@ const Hero: React.FC<HeroProps> = ({ onAdmissionClick }) => {
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             referrerPolicy="strict-origin-when-cross-origin"
             allowFullScreen
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              border: 'none',
-            }}
+            className="absolute top-0 left-0 w-full h-full border-none"
           />
         </div>
         <div className="absolute inset-0 bg-[#0A0F1E]/15 z-10"></div>
@@ -132,4 +125,3 @@ const Hero: React.FC<HeroProps> = ({ onAdmissionClick }) => {
 };
 
 export default Hero;
-
