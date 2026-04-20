@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Compass, Play, ArrowRight, ShieldCheck, Zap } from 'lucide-react';
 import { SCHOOL_ASSETS } from '../constants/assets';
@@ -51,14 +52,24 @@ const VirtualTour: React.FC = () => {
 
            <div className="lg:col-span-7 relative reveal" style={{ transitionDelay: '0.4s' }}>
              <div className="relative rounded-[60px] lg:rounded-[100px] overflow-hidden aspect-[16/10] shadow-4xl group cursor-pointer border border-slate-100 bg-black">
-                <iframe
-                  src="https://www.youtube.com/embed/joyPbz8Qbjs?autoplay=1&mute=1&loop=1&playlist=joyPbz8Qbjs&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
-                  title="Virtual Tour SMAN 2 Tompaso"
-                  allow="autoplay; encrypted-media"
-                  allowFullScreen
-                  className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-105 border-0"
-                  style={{ pointerEvents: 'none' }}
-                />
+                {/* YouTube iframe - full cover */}
+                <div className="absolute inset-0 w-full h-full" style={{ pointerEvents: 'none' }}>
+                  <iframe
+                    src="https://www.youtube.com/embed/joyPbz8Qbjs?autoplay=1&mute=1&loop=1&playlist=joyPbz8Qbjs&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&iv_load_policy=3"
+                    title="Virtual Tour SMAN 2 Tompaso"
+                    allow="autoplay; encrypted-media; fullscreen"
+                    className="border-0"
+                    style={{
+                      position: 'absolute',
+                      top: '50%',
+                      left: '50%',
+                      width: '177.78%',
+                      height: '177.78%',
+                      transform: 'translate(-50%, -50%)',
+                      pointerEvents: 'none',
+                    }}
+                  />
+                </div>
                 <div className="absolute inset-0 bg-[#0F172A]/10 group-hover:bg-transparent transition-colors pointer-events-none"></div>
                 <div className="absolute bottom-12 left-12 right-12 flex justify-between items-end text-white pointer-events-none">
                    <div className="glass-nav-card !bg-white/5 !backdrop-blur-xl px-10 py-6 rounded-[30px] border border-white/10">
@@ -71,6 +82,12 @@ const VirtualTour: React.FC = () => {
           
         </div>
       </div>
+    </section>
+  );
+};
+
+export default VirtualTour;
+
     </section>
   );
 };
