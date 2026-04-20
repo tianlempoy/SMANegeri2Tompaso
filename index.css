@@ -1,0 +1,195 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Outfit:wght@300;400;600;800&family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --ivory: #FDFCFB;
+  --navy: #0F172A;
+  --gold: #C5A059;
+  --slate: #64748B;
+  --accent-gold: #D4AF37;
+  --primary: #0F172A;
+  --secondary: #C5A059;
+  --background: #FDFCFB;
+  --text: #0F172A;
+  --text-light: #64748B;
+  --blue-accent: #3B82F6;
+  --school-primary: #0F172A;
+  --school-secondary: #C5A059;
+  --school-background: #FDFCFB;
+  --school-text: #0F172A;
+  --school-text-light: #64748B;
+  --school-blue-accent: #3B82F6;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  overflow-x: hidden;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--ivory);
+  color: var(--navy);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+.font-serif-prestige {
+  font-family: 'Cormorant Garamond', serif;
+}
+
+/* Apple-like font (Inter - similar to San Francisco) */
+.font-apple {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Premium Professional Font - Modern & Clean (No Italic/Script) */
+.font-premium {
+  font-family: 'Montserrat', 'Plus Jakarta Sans', sans-serif;
+}
+
+/* Premium Display Font - Elegant but Clean (No Italic) */
+.font-premium-display {
+  font-family: 'Playfair Display', 'Montserrat', serif;
+}
+
+/* Prestige Reveal Animations */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Glassmorphism Ivory */
+.glass-nav {
+  background: rgba(253, 252, 251, 0.85);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.05);
+}
+
+.ivory-card {
+  background: white;
+  border: 1px solid rgba(15, 23, 42, 0.03);
+  box-shadow: 0 10px 40px -10px rgba(15, 23, 42, 0.03);
+  transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.ivory-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 30px 60px -15px rgba(15, 23, 42, 0.08);
+  border-color: var(--gold);
+}
+
+/* Custom Scrollbar Premium */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--ivory); }
+::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 10px; }
+
+/* Hide scrollbar for horizontal scroll (mobile tab nav) */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Special Buttons */
+.btn-premium {
+  @apply relative overflow-hidden transition-all duration-500 active:scale-95 flex items-center justify-center;
+}
+
+.btn-premium-gold {
+  @apply bg-[#C5A059] text-white shadow-xl shadow-amber-900/10 hover:bg-[#0F172A];
+}
+
+.btn-premium-navy {
+  @apply bg-[#0F172A] text-white shadow-xl shadow-blue-900/10 hover:bg-[#C5A059];
+}
+
+/* News Card Staggered Animation */
+.news-card {
+  animation: slideIn 0.6s ease-out forwards;
+}
+
+.news-card:nth-child(1) { animation-delay: 0.1s; }
+.news-card:nth-child(2) { animation-delay: 0.2s; }
+.news-card:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Hero Accreditation Box Delay */
+.hero-accreditation-delay {
+  animation-delay: 0.6s;
+  transition-delay: 0.6s;
+}
+
+/* ===== MOBILE FIXES ===== */
+
+/* Prevent tap highlight on mobile */
+button, a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* iOS Safari: Prevent input zoom on focus */
+@media (max-width: 768px) {
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="url"],
+  input[type="time"],
+  input[type="number"],
+  select,
+  textarea {
+    font-size: 16px !important;
+    min-height: 44px;
+  }
+
+  /* Animate reveal for mobile - reduce distance */
+  .reveal {
+    transform: translateY(20px);
+  }
+}
+
+/* XS breakpoint helpers (screens >= 480px) */
+@media (min-width: 480px) {
+  .xs\:block { display: block; }
+  .xs\:inline { display: inline; }
+  .xs\:flex { display: flex; }
+  .xs\:hidden { display: none; }
+}
+
+/* Animate reveal */
+@keyframes animate-reveal {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-reveal {
+  animation: animate-reveal 0.4s ease-out forwards;
+}
