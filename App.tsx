@@ -55,12 +55,18 @@ const App: React.FC = () => {
         if (entry.isIntersecting) entry.target.classList.add('active');
       });
     }, { 
-      threshold: 0.01,
-      rootMargin: '0px 0px -50px 0px'
+      threshold: 0,
+      rootMargin: '100px 0px 100px 0px'
     });
-    const elements = document.querySelectorAll('.reveal');
-    elements.forEach(el => observer.observe(el));
-    return () => observer.disconnect();
+    // Timeout kecil agar DOM sudah selesai render sebelum observe
+    const timer = setTimeout(() => {
+      const elements = document.querySelectorAll('.reveal');
+      elements.forEach(el => observer.observe(el));
+    }, 50);
+    return () => {
+      observer.disconnect();
+      clearTimeout(timer);
+    };
   }, [activePage]);
 
   const handleLoginSuccess = async () => {
@@ -157,7 +163,7 @@ const App: React.FC = () => {
     }
   };
 
-  if (!authChecked) return null;
+  // Jangan blok render saat cek auth — tampilkan halaman langsung
 
   return (
     <div className="min-h-screen flex flex-col bg-white selection:bg-[#D4AF37] selection:text-primary">
@@ -182,3 +188,4 @@ const App: React.FC = () => {
 };
 
 export default App;
+
