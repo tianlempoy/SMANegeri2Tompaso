@@ -71,25 +71,10 @@ const ActivitiesSection: React.FC = () => {
           ))}
         </div>
 
-        <div className="mt-16 sm:mt-24 md:mt-32 bg-gradient-to-br from-[#0F172A] via-[#0A0F1E] to-blue-900 rounded-[40px] sm:rounded-[60px] md:rounded-[80px] p-6 sm:p-12 md:p-16 lg:p-24 xl:p-28 text-white relative overflow-hidden reveal active">
-           <div className="absolute top-0 right-0 w-[400px] sm:w-[600px] md:w-[800px] h-[400px] sm:h-[600px] md:h-[800px] bg-gradient-to-br from-[#C5A059]/20 to-blue-500/20 rounded-full blur-[100px] sm:blur-[120px] md:blur-[150px] -mr-20 sm:-mr-30 md:-mr-40 -mt-20 sm:-mt-30 md:-mt-40"></div>
-           <div className="flex flex-col lg:flex-row items-center justify-between gap-6 sm:gap-10 md:gap-16 relative z-10">
-              <div className="max-w-3xl">
-                 <div className="flex items-center space-x-3 sm:space-x-4 md:space-x-6 mb-4 sm:mb-6 md:mb-10">
-                   <Users className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 text-[#C5A059]" />
-                   <span className="text-[8px] sm:text-[9px] md:text-[10px] lg:text-[11px] font-black uppercase tracking-[0.3em] sm:tracking-[0.4em] md:tracking-[0.5em] text-[#C5A059]">Join the Community</span>
-                 </div>
-                 <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-medium tracking-tighter mb-4 sm:mb-6 md:mb-10 leading-none font-serif-prestige">Dapatkan <br/><span className="text-[#C5A059] italic">Legacy 2026.</span></h3>
-                 <p className="text-gray-300 text-xs sm:text-sm md:text-lg lg:text-2xl font-light leading-relaxed italic font-serif-prestige">Membangun karakter kepemimpinan melalui pengembangan diri yang strategis dan berdampak luas.</p>
-              </div>
-              <button className="bg-gradient-to-r from-[#C5A059] to-blue-600 text-white px-6 sm:px-12 md:px-16 lg:px-20 py-3 sm:py-5 md:py-6 lg:py-8 rounded-full font-black text-[8px] sm:text-[9px] md:text-[10px] uppercase tracking-widest hover:from-blue-600 hover:to-[#C5A059] transition-all shadow-2xl active:scale-95 whitespace-nowrap">
-                Lihat Jadwal Kegiatan
-              </button>
-           </div>
-        </div>
       </div>
     </section>
   );
 };
 
 export default ActivitiesSection;
+
