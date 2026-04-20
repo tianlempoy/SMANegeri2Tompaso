@@ -172,36 +172,6 @@ const TeachersSection: React.FC = () => {
         </div>
 
         {/* Contribution Portal */}
-        <div className="relative group overflow-hidden bg-[#0F172A] rounded-[80px] p-12 md:p-24 text-white shadow-3xl reveal active">
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#C5A059]/5 rounded-full blur-[120px] -mr-40 -mt-40"></div>
-          
-          <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-12">
-            <div className="max-w-xl">
-              <div className="inline-flex items-center space-x-4 bg-white/5 border border-white/10 px-6 py-2 rounded-full mb-8">
-                <CloudUpload className="h-4 w-4 text-[#C5A059]" />
-                <span className="text-[#C5A059] text-[9px] font-black uppercase tracking-[0.4em]">Integrated Submission Port</span>
-              </div>
-              <h2 className="text-5xl md:text-7xl font-medium tracking-tighter mb-8 leading-none font-serif-prestige">
-                Submit Warta <br /> <span className="text-gray-600 italic font-light">Legacy 2026.</span>
-              </h2>
-              <p className="text-gray-600 text-lg font-light leading-relaxed font-serif-prestige italic">
-                Portal khusus bagi bapak/ibu guru untuk mengirimkan berita kegiatan, pengumuman, dan prestasi kelas ke sistem pusat informasi digital sekolah.
-              </p>
-            </div>
-
-            <a 
-              href={GOOGLE_FORM_URL} 
-              target="_blank" 
-              className="group/btn relative bg-[#C5A059] text-[#0F172A] p-16 rounded-[60px] shadow-2xl hover:scale-105 transition-all duration-500"
-            >
-              <div className="absolute top-6 right-6 bg-[#0F172A] p-2 rounded-full text-white transition-transform group-hover/btn:rotate-45">
-                <ArrowUpRight className="h-5 w-5" />
-              </div>
-              <FileText className="h-12 w-12 mb-6" />
-              <p className="text-[11px] font-black uppercase tracking-[0.3em]">Isi Google Form</p>
-            </a>
-          </div>
-        </div>
       </div>
     </div>
   );
