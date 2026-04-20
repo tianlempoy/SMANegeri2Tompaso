@@ -5,12 +5,12 @@
 
 export const SCHOOL_ASSETS = {
   // Logo Resmi Sekolah
-  LOGO: 'https://i.ibb.co.com/7dGQkvbZ/20260104-094156.png', 
-  
+  LOGO: 'https://i.ibb.co.com/7dGQkvbZ/20260104-094156.png',
+
   // Foto Utama
   HERO_BUILDING: 'https://i.ibb.co.com/svqb8DsM/FB-IMG-1767504875049.jpg',
-  PRINCIPAL_PHOTO: '/kepsek.jpeg', 
-  
+  PRINCIPAL_PHOTO: '/kepsek.jpeg',
+
   // Foto Guru
   TEACHER_PHOTOS: {
     MATEMATIK: 'https://i.ibb.co.com/Vp0FjG1g/Whats-App-Image-2026-02-12-at-08-49-57.jpg',
@@ -31,9 +31,9 @@ export const SCHOOL_ASSETS = {
     DJENLY: '/mner-pajow.jpeg',
     RULY: '/mner-ruly.jpeg',
     VICTORY: '/staftu/WhatsApp Image 2026-04-20 at 15.17.13.jpeg',
-    OKTAVIA: '/staftu/WhatsApp Image 2026-04-20 at 15.17.13 (1).jpeg'
+    OKTAVIA: '/staftu/WhatsApp Image 2026-04-20 at 15.17.13 (1).jpeg',
   },
-  
+
   // Foto OSIS
   OSIS_PHOTOS: {
     PREYSI: '/osis/preysipesik.jpeg',
@@ -41,7 +41,7 @@ export const SCHOOL_ASSETS = {
     ENJEL: '/osis/enjel.jpeg',
     CIKA: '/osis/cika.jpeg'
   },
-  
+
   // Background & Dekorasi
   PATTERN_DOTS: 'https://www.transparenttextures.com/patterns/cubes.png',
   GRADIENT_MESH: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1964&auto=format&fit=crop',
@@ -61,15 +61,7 @@ export const SCHOOL_ASSETS = {
 
   // PPDB Background
   PPDB_BG: '/ppdb-bg.png',
-  
-  // Model Sovereign Section - Path yang benar (tanpa "public/")
-  SOVEREIGN_MODEL: '/model/model.png'
-};
 
-
-  // PPDB Background
-  PPDB_BG: '/ppdb-bg.png',
-  
-  // Model Sovereign Section - Path yang benar (tanpa "public/")
+  // Model Sovereign Section
   SOVEREIGN_MODEL: '/model/model.png'
 };
