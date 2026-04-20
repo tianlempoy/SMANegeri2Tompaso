@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import {
   User, Phone, BookOpen, CheckCircle, AlertCircle, Loader2, Send,
   ChevronRight, Copy, Check, Download, Printer, Eye, FileText,
-  MapPin, Calendar, Users, GraduationCap, Shield
+  MapPin, Calendar, Users, GraduationCap, Shield, Lock
 } from 'lucide-react';
 import { SCHOOL_ASSETS } from '../constants/assets';
 import { apiPPDBRegister, fetchPPDBSettings } from '../lib/actions';
