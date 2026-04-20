@@ -50,44 +50,48 @@ const VirtualTour: React.FC = () => {
             </button>
           </div>
 
-           <div className="lg:col-span-7 relative reveal" style={{ transitionDelay: '0.4s' }}>
-             <div className="relative rounded-[60px] lg:rounded-[100px] overflow-hidden aspect-[16/10] shadow-4xl group cursor-pointer border border-slate-100 bg-black">
-                {/* YouTube iframe - full cover */}
-                <div className="absolute inset-0 w-full h-full" style={{ pointerEvents: 'none' }}>
-                  <iframe
-                    src="https://www.youtube.com/embed/joyPbz8Qbjs?autoplay=1&mute=1&loop=1&playlist=joyPbz8Qbjs&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&iv_load_policy=3"
-                    title="Virtual Tour SMAN 2 Tompaso"
-                    allow="autoplay; encrypted-media; fullscreen"
-                    className="border-0"
-                    style={{
-                      position: 'absolute',
-                      top: '50%',
-                      left: '50%',
-                      width: '177.78%',
-                      height: '177.78%',
-                      transform: 'translate(-50%, -50%)',
-                      pointerEvents: 'none',
-                    }}
-                  />
-                </div>
-                <div className="absolute inset-0 bg-[#0F172A]/10 group-hover:bg-transparent transition-colors pointer-events-none"></div>
-                <div className="absolute bottom-12 left-12 right-12 flex justify-between items-end text-white pointer-events-none">
-                   <div className="glass-nav-card !bg-white/5 !backdrop-blur-xl px-10 py-6 rounded-[30px] border border-white/10">
-                      <p className="text-[9px] font-black uppercase tracking-[0.5em] text-[#C5A059] mb-2">Aerial Discovery</p>
-                      <h4 className="text-3xl font-black tracking-tighter">Main Building Hall</h4>
-                   </div>
-                </div>
+           <div className="lg:col-span-7 relative">
+             <div className="relative rounded-[60px] lg:rounded-[100px] overflow-hidden aspect-[16/10] shadow-2xl group border border-slate-100 bg-black">
+               {/* YouTube iframe cover */}
+               <div className="absolute inset-0 overflow-hidden" style={{ pointerEvents: 'none' }}>
+                 <iframe
+                   width="560"
+                   height="315"
+                   src="https://www.youtube.com/embed/joyPbz8Qbjs?si=BFfFG2TpSyDjESV4&autoplay=1&mute=1&loop=1&playlist=joyPbz8Qbjs&controls=0&rel=0&modestbranding=1"
+                   title="Virtual Tour SMAN 2 Tompaso"
+                   frameBorder="0"
+                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                   referrerPolicy="strict-origin-when-cross-origin"
+                   allowFullScreen
+                   style={{
+                     position: 'absolute',
+                     top: '50%',
+                     left: '50%',
+                     width: '177.78%',
+                     height: '177.78%',
+                     minWidth: '100%',
+                     minHeight: '100%',
+                     transform: 'translate(-50%, -50%)',
+                     border: 'none',
+                   }}
+                 />
+               </div>
+
+               {/* Overlay */}
+               <div className="absolute inset-0 bg-[#0F172A]/10 group-hover:bg-transparent transition-colors pointer-events-none" />
+
+               {/* Label bawah */}
+               <div className="absolute bottom-10 left-10 right-10 flex justify-between items-end text-white pointer-events-none">
+                 <div className="glass-nav-card !bg-white/5 !backdrop-blur-xl px-10 py-5 rounded-[28px] border border-white/10">
+                   <p className="text-[9px] font-black uppercase tracking-[0.5em] text-[#C5A059] mb-1">Aerial Discovery</p>
+                   <h4 className="text-2xl font-black tracking-tighter">Main Building Hall</h4>
+                 </div>
+               </div>
              </div>
            </div>
           
         </div>
       </div>
-    </section>
-  );
-};
-
-export default VirtualTour;
-
     </section>
   );
 };
