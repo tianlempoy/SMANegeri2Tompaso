@@ -40,12 +40,12 @@ const Navbar: React.FC<NavbarProps> = ({ activePage, setActivePage }) => {
   };
 
   // Navbar fixed untuk semua halaman dengan styling yang sama
-  const textColorClass = isScrolled ? 'text-[#0F172A]' : 'text-[#0F172A]';
-  const inactiveLinkClass = isScrolled ? 'text-[#0F172A]/50' : 'text-[#0F172A]/60';
+  const textColorClass = isScrolled ? 'text-[#0F172A]' : 'text-white';
+  const inactiveLinkClass = isScrolled ? 'text-[#0F172A]/50' : 'text-white/70';
   const navPositionClass = 'fixed top-0 left-0 right-0';
   const navBgClass = isScrolled 
     ? 'py-4 glass-nav shadow-lg bg-white/90' 
-    : 'py-4 bg-white shadow-md';
+    : 'py-6 bg-transparent';
 
   return (
     <nav className={`${navPositionClass} z-[1000] transition-all duration-700 ${navBgClass}`}>
@@ -61,7 +61,7 @@ const Navbar: React.FC<NavbarProps> = ({ activePage, setActivePage }) => {
               <span className={`text-sm sm:text-base md:text-xl font-bold tracking-tight transition-colors duration-500 ${textColorClass}`}>
                 SMAN 2 <span className="text-[#C5A059]">TOMPASO</span>
               </span>
-              <span className={`text-[7px] sm:text-[9px] font-black uppercase tracking-[0.3em] sm:tracking-[0.4em] transition-colors duration-500 ${isScrolled ? 'text-black' : 'text-black'}`}>
+              <span className={`text-[7px] sm:text-[9px] font-black uppercase tracking-[0.3em] sm:tracking-[0.4em] transition-colors duration-500 ${isScrolled ? 'text-black/50' : 'text-white/60'}`}>
                 Unggul dalam Pendidikan
               </span>
             </div>
@@ -90,7 +90,7 @@ const Navbar: React.FC<NavbarProps> = ({ activePage, setActivePage }) => {
             ))}
           </div>
           
-          <div className={`h-4 w-px transition-colors duration-500 ${isScrolled ? 'bg-slate-200' : 'bg-slate-200'}`}></div>
+          <div className={`h-4 w-px transition-colors duration-500 ${isScrolled ? 'bg-slate-200' : 'bg-white/20'}`}></div>
           
           <div className="flex items-center space-x-4 xl:space-x-6">
             <button 
@@ -196,3 +196,4 @@ const Navbar: React.FC<NavbarProps> = ({ activePage, setActivePage }) => {
 };
 
 export default Navbar;
+
