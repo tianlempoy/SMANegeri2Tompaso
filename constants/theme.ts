@@ -66,3 +66,4 @@ export const SCHOOL_THEME = {
     HOVER_EFFECT: 'hover:bg-blue-600 hover:text-white'
   }
 };
+
