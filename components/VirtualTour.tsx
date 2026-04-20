@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Compass, Play, ArrowRight, ShieldCheck, Zap } from 'lucide-react';
 import { SCHOOL_ASSETS } from '../constants/assets';
@@ -50,32 +49,25 @@ const VirtualTour: React.FC = () => {
             </button>
           </div>
 
-          <div className="lg:col-span-7 relative reveal" style={{ transitionDelay: '0.4s' }}>
+           <div className="lg:col-span-7 relative reveal" style={{ transitionDelay: '0.4s' }}>
              <div className="relative rounded-[60px] lg:rounded-[100px] overflow-hidden aspect-[16/10] shadow-4xl group cursor-pointer border border-slate-100 bg-black">
-                <video 
-                  src="/videos/menu.MP4" 
-                  autoPlay 
-                  muted 
-                  loop 
-                  playsInline 
-                  className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-105"
+                <iframe
+                  src="https://www.youtube.com/embed/joyPbz8Qbjs?autoplay=1&mute=1&loop=1&playlist=joyPbz8Qbjs&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
+                  title="Virtual Tour SMAN 2 Tompaso"
+                  allow="autoplay; encrypted-media"
+                  allowFullScreen
+                  className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-105 border-0"
+                  style={{ pointerEvents: 'none' }}
                 />
-                <div className="absolute inset-0 bg-[#0F172A]/10 group-hover:bg-transparent transition-colors"></div>
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
-                   <div className="w-24 h-24 rounded-full bg-white/10 backdrop-blur-3xl border border-white/20 flex items-center justify-center text-white scale-90 group-hover:scale-100 transition-transform duration-700">
-                      <div className="w-14 h-14 rounded-full bg-[#C5A059] flex items-center justify-center shadow-2xl">
-                         <Play size={20} className="fill-current ml-1" />
-                      </div>
-                   </div>
-                </div>
-                <div className="absolute bottom-12 left-12 right-12 flex justify-between items-end text-white">
+                <div className="absolute inset-0 bg-[#0F172A]/10 group-hover:bg-transparent transition-colors pointer-events-none"></div>
+                <div className="absolute bottom-12 left-12 right-12 flex justify-between items-end text-white pointer-events-none">
                    <div className="glass-nav-card !bg-white/5 !backdrop-blur-xl px-10 py-6 rounded-[30px] border border-white/10">
                       <p className="text-[9px] font-black uppercase tracking-[0.5em] text-[#C5A059] mb-2">Aerial Discovery</p>
                       <h4 className="text-3xl font-black tracking-tighter">Main Building Hall</h4>
                    </div>
                 </div>
              </div>
-          </div>
+           </div>
           
         </div>
       </div>
