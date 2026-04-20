@@ -24,16 +24,28 @@ const Hero: React.FC<HeroProps> = ({ onAdmissionClick }) => {
     <section className="relative min-h-screen flex items-center bg-gradient-to-br from-[#0F172A] via-[#0A0F1E] to-blue-900 pt-16 sm:pt-20 overflow-hidden">
       <div className="absolute inset-0 z-0 overflow-hidden select-none">
         <div className="absolute inset-0 transform scale-105">
-          <video 
-            autoPlay 
-            muted 
-            loop 
-            playsInline
-            className="w-full h-full object-cover opacity-90"
-            poster={SCHOOL_ASSETS.HERO_BUILDING}
-          >
-            <source src="/videos/menu.MP4" type="video/mp4" />
-          </video>
+          <iframe
+            width="100%"
+            height="100%"
+            src="https://www.youtube.com/embed/joyPbz8Qbjs?si=94IZnghY31EzmQYT&autoplay=1&mute=1&loop=1&playlist=joyPbz8Qbjs&controls=0&rel=0&modestbranding=1"
+            title="SMAN 2 Tompaso Background"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              width: '177.78%',
+              height: '177.78%',
+              minWidth: '100%',
+              minHeight: '100%',
+              transform: 'translate(-50%, -50%)',
+              border: 'none',
+              opacity: 0.9
+            }}
+          />
         </div>
         <div className="absolute inset-0 bg-[#0A0F1E]/15 z-10"></div>
         <div className="absolute inset-0 bg-gradient-to-r from-[#0A0F1E] via-[#0A0F1E]/80 to-blue-900/30 z-20"></div>
