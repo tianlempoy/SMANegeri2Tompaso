@@ -5,7 +5,7 @@ import { SCHOOL_ASSETS } from '../constants/assets';
 
 const VirtualTour: React.FC = () => {
   return (
-    <section className="py-40 lg:py-64 bg-white relative overflow-hidden">
+    <section className="py-24 sm:py-32 lg:py-64 bg-white relative overflow-hidden">
       <div className="max-w-[1600px] mx-auto px-8 lg:px-20 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-24 items-center">
           
@@ -50,8 +50,8 @@ const VirtualTour: React.FC = () => {
             </button>
           </div>
 
-           <div className="lg:col-span-7 relative">
-             <div className="relative rounded-[60px] lg:rounded-[100px] overflow-hidden aspect-[16/10] shadow-2xl group border border-slate-100 bg-black">
+           <div className="lg:col-span-7 relative px-2 sm:px-0">
+             <div className="relative rounded-[32px] sm:rounded-[60px] lg:rounded-[100px] overflow-hidden aspect-video sm:aspect-[16/10] shadow-2xl group border border-slate-100 bg-black">
                {/* YouTube iframe cover */}
                <div className="absolute inset-0 overflow-hidden" style={{ pointerEvents: 'none' }}>
                <iframe
@@ -81,10 +81,10 @@ const VirtualTour: React.FC = () => {
                <div className="absolute inset-0 bg-[#0F172A]/10 group-hover:bg-transparent transition-colors pointer-events-none" />
 
                {/* Label bawah */}
-               <div className="absolute bottom-10 left-10 right-10 flex justify-between items-end text-white pointer-events-none">
-                 <div className="glass-nav-card !bg-white/5 !backdrop-blur-xl px-10 py-5 rounded-[28px] border border-white/10">
-                   <p className="text-[9px] font-black uppercase tracking-[0.5em] text-[#C5A059] mb-1">Aerial Discovery</p>
-                   <h4 className="text-2xl font-black tracking-tighter">Main Building Hall</h4>
+               <div className="absolute bottom-6 left-6 right-6 sm:bottom-10 sm:left-10 sm:right-10 flex justify-between items-end text-white pointer-events-none">
+                 <div className="glass-nav-card !bg-white/5 !backdrop-blur-xl px-6 py-3 sm:px-10 sm:py-5 rounded-2xl sm:rounded-[28px] border border-white/10">
+                   <p className="text-[7px] sm:text-[9px] font-black uppercase tracking-[0.4em] sm:tracking-[0.5em] text-[#C5A059] mb-0.5 sm:mb-1">Aerial Discovery</p>
+                   <h4 className="text-lg sm:text-2xl font-black tracking-tighter">Main Building Hall</h4>
                  </div>
                </div>
              </div>
@@ -97,3 +97,4 @@ const VirtualTour: React.FC = () => {
 };
 
 export default VirtualTour;
+
