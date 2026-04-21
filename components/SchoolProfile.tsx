@@ -1,11 +1,12 @@
-
 import React, { useState, useEffect } from 'react';
 import { Target, Compass, Book, Brain, Zap, Heart, ShieldCheck, Crown, UserCheck, ChevronRight } from 'lucide-react';
 import { SCHOOL_ASSETS } from '../constants/assets';
 import { SCHOOL_THEME } from '../constants/theme';
+import { fetchOSISRealtime } from '../lib/actions';
 
 const SchoolProfile: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [osisMembers, setOsisMembers] = useState<any[]>([]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -13,8 +14,20 @@ const SchoolProfile: React.FC = () => {
     };
 
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    
+    // Subscribe to OSIS members
+    const unsubscribe = fetchOSISRealtime((data) => {
+      if (data && data.length > 0) {
+        setOsisMembers(data);
+      }
+    });
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (unsubscribe) unsubscribe();
+    };
   }, []);
+
   const mottoValues = [
     {
       title: SCHOOL_THEME.CONTENT.PHILOSOPHY.CERDAS.title,
@@ -36,12 +49,20 @@ const SchoolProfile: React.FC = () => {
     }
   ];
 
-  const osisLeadership = SCHOOL_THEME.CONTENT.LEADERSHIP.map(leader => ({
-    name: leader.name,
-    role: leader.role,
-    photo: leader.photo,
-    icon: leader.icon === 'Crown' ? <Crown /> : leader.icon === 'UserCheck' ? <UserCheck /> : leader.icon === 'Book' ? <Book /> : <ShieldCheck />
-  }));
+  // Map from DB if available, otherwise use static theme data
+  const osisLeadership = osisMembers.length > 0 
+    ? osisMembers.map(member => ({
+        name: member.nama,
+        role: member.jabatan,
+        photo: member.photo_url,
+        icon: member.jabatan.toLowerCase().includes('ketua') ? <Crown /> : <UserCheck />
+      }))
+    : SCHOOL_THEME.CONTENT.LEADERSHIP.map(leader => ({
+        name: leader.name,
+        role: leader.role,
+        photo: leader.photo,
+        icon: leader.icon === 'Crown' ? <Crown /> : leader.icon === 'UserCheck' ? <UserCheck /> : leader.icon === 'Book' ? <Book /> : <ShieldCheck />
+      }));
 
   return (
     <div className="bg-[#FDFCFB]">
@@ -236,3 +257,4 @@ const SchoolProfile: React.FC = () => {
 };
 
 export default SchoolProfile;
+
