@@ -33,6 +33,34 @@ const saveToStorage = (key: string, data: any) => {
   localStorage.setItem(key, JSON.stringify(data));
 };
 
+export const apiLogActivity = async (user: string, action: string, details: string) => {
+  console.log(`📝 [LOG] ${user}: ${action} - ${details}`);
+  
+  if (isSupabaseConfigured()) {
+    try {
+      await supabase!.from('activity_logs').insert([{ user_id: user, action, details, created_at: new Date().toISOString() }]);
+    } catch (e) {
+      console.warn('Failed to log activity to Supabase:', e);
+    }
+  }
+
+  try {
+    const logs = JSON.parse(localStorage.getItem('sman2t_activity_logs') || '[]');
+    logs.unshift({
+      timestamp: new Date().toISOString(),
+      user,
+      action,
+      details
+    });
+    localStorage.setItem('sman2t_activity_logs', JSON.stringify(logs.slice(0, 100)));
+  } catch (e) {
+    // Fail silently for localStorage
+  }
+  
+  return { success: true };
+};
+
+
 // ===================== AUTH =====================
 
 /**
@@ -627,6 +655,18 @@ export const insertGallery = async (gallery: any) => {
     return { data: null, error: err };
   }
 };
+export const updateGallery = async (id: any, gallery: any) => {
+  if (isSupabaseConfigured()) return await supabase!.from('galeri').update(gallery).eq('id', id).select();
+  const items = getFromStorage(STORAGE_KEYS.GALERI);
+  const idx = items.findIndex((i: any) => i.id === id.toString());
+  if (idx >= 0) {
+    items[idx] = { ...items[idx], ...gallery };
+    saveToStorage(STORAGE_KEYS.GALERI, items);
+    return { data: [items[idx]], error: null };
+  }
+  return { error: { message: 'Not found' } };
+};
+
 
 export const deleteGallery = async (id: any) => {
   if (isSupabaseConfigured()) return await supabase!.from('galeri').delete().eq('id', id);
@@ -753,96 +793,46 @@ export const apiPPDBGetAll = async () => {
   return { data: getFromStorage('sman2t_ppdb') };
 };
 
-export const apiPPDBUpdateStatus = async (id: any, status: string, keterangan?: string) => {
-  if (isSupabaseConfigured()) {
-    try {
-      const { error } = await supabase!.from('ppdb').update({ status_pendaftaran: status }).eq('id', id);
-      if (error) throw error;
-      return { success: true };
-    } catch (err: any) {
-      return { success: false, error: err };
-    }
-  }
+export const apiPPDBUpdateStatus = async (id: any, status: string) => {
+  if (isSupabaseConfigured()) return await supabase!.from('ppdb').update({ status_pendaftaran: status }).eq('id', id).select();
   const items = getFromStorage('sman2t_ppdb');
   const idx = items.findIndex((i: any) => i.id === id.toString());
   if (idx >= 0) {
     items[idx].status_pendaftaran = status;
     saveToStorage('sman2t_ppdb', items);
+    return { success: true, data: [items[idx]], error: null };
   }
-  return { success: true };
+  return { success: false, error: { message: 'Not found' } };
 };
 
 export const apiPPDBDelete = async (id: any) => {
-  if (isSupabaseConfigured()) {
-    const { error } = await supabase!.from('ppdb').delete().eq('id', id);
-    return { error };
-  }
+  if (isSupabaseConfigured()) return await supabase!.from('ppdb').delete().eq('id', id);
   const items = getFromStorage('sman2t_ppdb');
   saveToStorage('sman2t_ppdb', items.filter((i: any) => i.id !== id.toString()));
-  return { error: null };
+  return { success: true };
 };
 
 export const fetchPPDBSettings = async () => {
   if (isSupabaseConfigured()) {
-    try {
-      const { data, error } = await supabase!.from('site_settings').select('*').eq('key', 'ppdb_open').maybeSingle();
-      if (!error && data) {
-        return { data: { is_ppdb_open: data.value === 'true' }, error: null };
-      }
-      // If table doesn't exist or setting missing, use fallback
-    } catch (e) {
-      console.warn('Supabase site_settings not found, using fallback.');
-    }
+    const { data } = await supabase!.from('settings').select('*').eq('key', 'is_ppdb_open').maybeSingle();
+    return { data: data ? { is_ppdb_open: data.value === 'true' } : { is_ppdb_open: true } };
   }
-  
-  const settings = localStorage.getItem(STORAGE_KEYS.SETTINGS);
-  if (settings) {
-    return { data: JSON.parse(settings), error: null };
-  }
-  
-  // Default settings
-  const defaultSettings = { is_ppdb_open: true };
-  localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(defaultSettings));
-  return { data: defaultSettings, error: null };
+  const settings = getFromStorage(STORAGE_KEYS.SETTINGS);
+  return { data: (settings as any).is_ppdb_open !== undefined ? settings : { is_ppdb_open: true } };
 };
 
 export const updatePPDBSettings = async (isOpen: boolean) => {
-  const settings = { is_ppdb_open: isOpen };
-  
   if (isSupabaseConfigured()) {
-    try {
-      const { error } = await supabase!
-        .from('site_settings')
-        .upsert({ key: 'ppdb_open', value: isOpen.toString() }, { onConflict: 'key' });
-      
-      if (error) throw error;
-    } catch (e) {
-      console.error('Error updating Supabase settings:', e);
-    }
+    return await supabase!.from('settings').upsert({ key: 'is_ppdb_open', value: isOpen.toString() }, { onConflict: 'key' }).select();
   }
-  
-  localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(settings));
-  return { success: true, data: settings, error: null };
+  const settings = { is_ppdb_open: isOpen };
+  saveToStorage(STORAGE_KEYS.SETTINGS, settings);
+  return { success: true };
 };
 
 // ===================== OTHERS =====================
 
-/**
- * Log activity to local storage or console
- */
-export const apiLogActivity = async (user: string, action: string, details: string) => {
-  console.log(`📝 [LOG] ${user}: ${action} - ${details}`);
-  // Optional: save to local storage log
-  const logs = JSON.parse(localStorage.getItem('sman2t_activity_logs') || '[]');
-  logs.unshift({
-    timestamp: new Date().toISOString(),
-    user,
-    action,
-    details
-  });
-  localStorage.setItem('sman2t_activity_logs', JSON.stringify(logs.slice(0, 100)));
-  return { success: true };
-};
+
 
 /**
  * Generic Realtime Subscription Helper
@@ -884,15 +874,10 @@ export const fetchSchedulesRealtime = (callback: (data: any[]) => void) => {
     const { data } = await fetchSchedules();
     callback(data || []);
   };
-
   load();
-
-  if (isSupabaseConfigured()) {
-    return subscribeToTable('jadwal', load);
-  } else {
-    const interval = setInterval(load, 10000); 
-    return () => clearInterval(interval);
-  }
+  if (isSupabaseConfigured()) return subscribeToTable('jadwal', load);
+  const interval = setInterval(load, 10000);
+  return () => clearInterval(interval);
 };
 
 export const fetchAnnouncementsRealtime = (callback: (data: any[]) => void) => {
@@ -900,15 +885,10 @@ export const fetchAnnouncementsRealtime = (callback: (data: any[]) => void) => {
     const { data } = await fetchAnnouncements();
     callback(data || []);
   };
-
   load();
-
-  if (isSupabaseConfigured()) {
-    return subscribeToTable('pengumuman', load);
-  } else {
-    const interval = setInterval(load, 10000); 
-    return () => clearInterval(interval);
-  }
+  if (isSupabaseConfigured()) return subscribeToTable('pengumuman', load);
+  const interval = setInterval(load, 10000);
+  return () => clearInterval(interval);
 };
 
 export const fetchPPDBRealtime = (callback: (data: any[]) => void) => {
@@ -916,15 +896,32 @@ export const fetchPPDBRealtime = (callback: (data: any[]) => void) => {
     const { data } = await apiPPDBGetAll();
     callback(data || []);
   };
-
   load();
+  if (isSupabaseConfigured()) return subscribeToTable('ppdb', load);
+  const interval = setInterval(load, 10000);
+  return () => clearInterval(interval);
+};
 
-  if (isSupabaseConfigured()) {
-    return subscribeToTable('ppdb', load);
-  } else {
-    const interval = setInterval(load, 10000); 
-    return () => clearInterval(interval);
-  }
+export const fetchOSISRealtime = (callback: (data: any[]) => void) => {
+  const load = async () => {
+    const { data } = await fetchOSIS();
+    callback(data || []);
+  };
+  load();
+  if (isSupabaseConfigured()) return subscribeToTable('osis_members', load);
+  const interval = setInterval(load, 10000);
+  return () => clearInterval(interval);
+};
+
+export const fetchTeachersRealtime = (callback: (data: any[]) => void) => {
+  const load = async () => {
+    const { data } = await fetchTeachers();
+    callback(data || []);
+  };
+  load();
+  if (isSupabaseConfigured()) return subscribeToTable('teachers', load);
+  const interval = setInterval(load, 10000);
+  return () => clearInterval(interval);
 };
 
 export const fetchActivitiesRealtime = (callback: (data: any[]) => void) => {
@@ -956,28 +953,6 @@ export const fetchGalleryRealtime = (callback: (data: any[]) => void) => {
   };
   load();
   if (isSupabaseConfigured()) return subscribeToTable('galeri', load);
-  const interval = setInterval(load, 10000);
-  return () => clearInterval(interval);
-};
-
-export const fetchTeachersRealtime = (callback: (data: any[]) => void) => {
-  const load = async () => {
-    const { data } = await fetchTeachers();
-    callback(data || []);
-  };
-  load();
-  if (isSupabaseConfigured()) return subscribeToTable('teachers', load);
-  const interval = setInterval(load, 10000);
-  return () => clearInterval(interval);
-};
-
-export const fetchOSISRealtime = (callback: (data: any[]) => void) => {
-  const load = async () => {
-    const { data } = await fetchOSIS();
-    callback(data || []);
-  };
-  load();
-  if (isSupabaseConfigured()) return subscribeToTable('osis_members', load);
   const interval = setInterval(load, 10000);
   return () => clearInterval(interval);
 };
