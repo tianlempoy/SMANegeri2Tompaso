@@ -157,28 +157,34 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
     e.preventDefault();
     setLoading(true);
     try {
+      const submissionData = { ...formData };
+      // Bersihkan field virtual agar tidak menyebabkan error di Supabase
+      delete (submissionData as any).date;
+      delete (submissionData as any).id;
+      delete (submissionData as any).created_at;
+
       let result;
       switch (formType) {
         case 'berita': 
-          result = editingItem ? await updateNews(editingItem.id, formData) : await insertNews(formData); break;
+          result = editingItem ? await updateNews(editingItem.id, submissionData) : await insertNews(submissionData); break;
         case 'jadwal':
-          result = editingItem ? await updateSchedule(editingItem.id, formData) : await insertSchedule(formData); break;
+          result = editingItem ? await updateSchedule(editingItem.id, submissionData) : await insertSchedule(submissionData); break;
         case 'pengumuman':
-          result = editingItem ? await updateAnnouncement(editingItem.id, formData) : await insertAnnouncement(formData); break;
+          result = editingItem ? await updateAnnouncement(editingItem.id, submissionData) : await insertAnnouncement(submissionData); break;
         case 'teachers':
-          result = editingItem ? await updateTeacher(editingItem.id, formData) : await insertTeacher(formData); break;
+          result = editingItem ? await updateTeacher(editingItem.id, submissionData) : await insertTeacher(submissionData); break;
         case 'osis':
-          result = editingItem ? await updateOSIS(editingItem.id, formData) : await insertOSIS(formData); break;
+          result = editingItem ? await updateOSIS(editingItem.id, submissionData) : await insertOSIS(submissionData); break;
         case 'activities':
-          result = editingItem ? await updateActivity(editingItem.id, formData) : await insertActivity(formData); break;
+          result = editingItem ? await updateActivity(editingItem.id, submissionData) : await insertActivity(submissionData); break;
         case 'achievements':
-          result = editingItem ? await updateAchievement(editingItem.id, formData) : await insertAchievement(formData); break;
+          result = editingItem ? await updateAchievement(editingItem.id, submissionData) : await insertAchievement(submissionData); break;
         case 'gallery':
-          result = editingItem ? await updateGallery(editingItem.id, formData) : await insertGallery(formData); break;
+          result = editingItem ? await updateGallery(editingItem.id, submissionData) : await insertGallery(submissionData); break;
         case 'policies':
-          result = await updatePolicy(editingItem.id, formData); break;
+          result = await updatePolicy(editingItem.id, submissionData); break;
         case 'users':
-          result = editingItem ? await apiUpdateUser(editingItem.id, formData) : await apiCreateUser(formData); break;
+          result = editingItem ? await apiUpdateUser(editingItem.id, submissionData) : await apiCreateUser(submissionData); break;
       }
       
       if (result && (result as any).error) throw (result as any).error;
@@ -1019,4 +1025,5 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
 };
 
 export default AdminDashboard;
+
 
