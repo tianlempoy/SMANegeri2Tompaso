@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://sma-negeri2-tompaso-official.vercel.app/sitemap.xml
