@@ -18,7 +18,7 @@ const SchoolHistory: React.FC = () => {
            <img 
             src="https://images.unsplash.com/photo-1596402184320-417d7178b2cd?q=80&w=2070&auto=format&fit=crop" 
             alt="Tompaso Heritage" 
-            className="w-full h-full object-cover grayscale transition-transform duration-[20s] hover:scale-110"
+            className="w-full h-full object-cover transition-transform duration-[20s] hover:scale-110"
            />
            <div className="absolute inset-0 bg-gradient-to-b from-[#0A0F1E] via-transparent to-[#0A0F1E]"></div>
         </div>
@@ -104,7 +104,7 @@ const SchoolHistory: React.FC = () => {
               <div className="w-full lg:w-1/2 h-[600px] relative">
                  <img 
                   src="https://images.unsplash.com/photo-1596402184320-417d7178b2cd?q=80&w=2070&auto=format&fit=crop" 
-                  className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-[2s]"
+                  className="w-full h-full object-cover transition-all duration-[2s]"
                   alt="Watu Pinabetengan"
                  />
                  <div className="absolute inset-0 bg-gradient-to-r from-[#0A0F1E] via-transparent to-transparent hidden lg:block"></div>
