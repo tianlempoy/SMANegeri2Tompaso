@@ -13,7 +13,7 @@ import {
   fetchOSIS, insertOSIS, updateOSIS, deleteOSIS,
   fetchActivities, insertActivity, updateActivity, deleteActivity,
   fetchAchievements, insertAchievement, updateAchievement, deleteAchievement,
-  fetchGallery, insertGallery, deleteGallery,
+  fetchGallery, insertGallery, updateGallery, deleteGallery,
   fetchPolicies, updatePolicy,
   apiGetStats, apiGetActivityLog, apiGetUsers, apiCreateUser, apiDeleteUser, apiResetPassword, apiUpdateUser,
   apiPPDBGetAll, apiPPDBUpdateStatus, apiPPDBDelete, fetchPPDBRealtime, apiSyncInitialContent,
@@ -174,7 +174,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
         case 'achievements':
           result = editingItem ? await updateAchievement(editingItem.id, formData) : await insertAchievement(formData); break;
         case 'gallery':
-          result = await insertGallery(formData); break;
+          result = editingItem ? await updateGallery(editingItem.id, formData) : await insertGallery(formData); break;
         case 'policies':
           result = await updatePolicy(editingItem.id, formData); break;
         case 'users':
@@ -825,7 +825,18 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                 </div>
                 <div><label className="form-label">Ringkasan Singkat</label><textarea className="form-input" rows={3} value={formData.excerpt||''} onChange={e => setFormData({...formData, excerpt: e.target.value})} /></div>
                 <div><label className="form-label">Isi Lengkap *</label><textarea required className="form-input" rows={8} value={formData.content||''} onChange={e => setFormData({...formData, content: e.target.value})} /></div>
-                <div><label className="form-label">URL Gambar Sampul</label><input className="form-input" placeholder="https://..." value={formData.image_url||''} onChange={e => setFormData({...formData, image_url: e.target.value})} /></div>
+                <div>
+                  <label className="form-label">URL Gambar Sampul</label>
+                  <input className="form-input" placeholder="https://..." value={formData.image_url||''} onChange={e => setFormData({...formData, image_url: e.target.value})} />
+                  {formData.image_url && (
+                    <div className="mt-4 rounded-2xl overflow-hidden border border-slate-800 bg-slate-950 aspect-video group relative">
+                      <img src={formData.image_url} alt="Preview" className="w-full h-full object-cover" />
+                      <div className="absolute inset-0 bg-slate-900/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                        <span className="bg-slate-900/80 px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest text-amber-500 border border-amber-500/20">Pratinjau Gambar</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </>)}
 
               {/* TEACHERS FORM */}
@@ -838,7 +849,15 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                   <div><label className="form-label">Jabatan/Tugas</label><input className="form-input" placeholder="Waka Kurikulum / Guru Madya" value={formData.jabatan||''} onChange={e => setFormData({...formData, jabatan: e.target.value})} /></div>
                   <div><label className="form-label">Spesialisasi/Mapel</label><input className="form-input" value={formData.spesialisasi||''} onChange={e => setFormData({...formData, spesialisasi: e.target.value})} /></div>
                 </div>
-                <div><label className="form-label">URL Foto Guru</label><input className="form-input" placeholder="https://..." value={formData.photo_url||''} onChange={e => setFormData({...formData, photo_url: e.target.value})} /></div>
+                <div>
+                  <label className="form-label">URL Foto Guru</label>
+                  <input className="form-input" placeholder="https://..." value={formData.photo_url||''} onChange={e => setFormData({...formData, photo_url: e.target.value})} />
+                  {formData.photo_url && (
+                    <div className="mt-4 w-32 h-32 rounded-2xl overflow-hidden border border-slate-800 bg-slate-950">
+                      <img src={formData.photo_url} alt="Preview" className="w-full h-full object-cover" />
+                    </div>
+                  )}
+                </div>
                 <div className="grid grid-cols-2 gap-6">
                   <div><label className="form-label">Email</label><input className="form-input" type="email" value={formData.email||''} onChange={e => setFormData({...formData, email: e.target.value})} /></div>
                   <div><label className="form-label">WhatsApp</label><input className="form-input" value={formData.phone||''} onChange={e => setFormData({...formData, phone: e.target.value})} /></div>
@@ -855,7 +874,15 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                   <div><label className="form-label">Kelas</label><input className="form-input" value={formData.kelas||''} onChange={e => setFormData({...formData, kelas: e.target.value})} /></div>
                   <div><label className="form-label">Masa Jabatan</label><input className="form-input" value={formData.masa_jabatan||'2025/2026'} onChange={e => setFormData({...formData, masa_jabatan: e.target.value})} /></div>
                 </div>
-                <div><label className="form-label">URL Foto</label><input className="form-input" placeholder="https://..." value={formData.photo_url||''} onChange={e => setFormData({...formData, photo_url: e.target.value})} /></div>
+                <div>
+                  <label className="form-label">URL Foto</label>
+                  <input className="form-input" placeholder="https://..." value={formData.photo_url||''} onChange={e => setFormData({...formData, photo_url: e.target.value})} />
+                  {formData.photo_url && (
+                    <div className="mt-4 w-32 h-32 rounded-2xl overflow-hidden border border-slate-800 bg-slate-950">
+                      <img src={formData.photo_url} alt="Preview" className="w-full h-full object-cover" />
+                    </div>
+                  )}
+                </div>
               </>)}
 
               {/* ACTIVITIES FORM */}
@@ -865,7 +892,15 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                   <div><label className="form-label">Kategori</label><input className="form-input" value={formData.category||''} onChange={e => setFormData({...formData, category: e.target.value})} /></div>
                   <div><label className="form-label">Waktu/Status</label><input className="form-input" placeholder="Setiap Sabtu / Terjadwal" value={formData.date||''} onChange={e => setFormData({...formData, date: e.target.value})} /></div>
                 </div>
-                <div><label className="form-label">URL Foto Utama</label><input className="form-input" placeholder="https://..." value={formData.image_url||''} onChange={e => setFormData({...formData, image_url: e.target.value})} /></div>
+                <div>
+                  <label className="form-label">URL Foto Utama</label>
+                  <input className="form-input" placeholder="https://..." value={formData.image_url||''} onChange={e => setFormData({...formData, image_url: e.target.value})} />
+                  {formData.image_url && (
+                    <div className="mt-4 rounded-2xl overflow-hidden border border-slate-800 bg-slate-950 aspect-video">
+                      <img src={formData.image_url} alt="Preview" className="w-full h-full object-cover" />
+                    </div>
+                  )}
+                </div>
                 <div><label className="form-label">Deskripsi Kegiatan</label><textarea className="form-input" rows={4} value={formData.description||''} onChange={e => setFormData({...formData, description: e.target.value})} /></div>
               </>)}
 
@@ -878,14 +913,30 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                 </div>
                 <div className="grid grid-cols-2 gap-6">
                   <div><label className="form-label">Tingkat / Kategori</label><input className="form-input" placeholder="Kabupaten / Provinsi / Nasional" value={formData.category||''} onChange={e => setFormData({...formData, category: e.target.value})} /></div>
-                  <div><label className="form-label">URL Foto / Medali</label><input className="form-input" value={formData.image_url||''} onChange={e => setFormData({...formData, image_url: e.target.value})} /></div>
+                  <div>
+                    <label className="form-label">URL Foto / Medali</label>
+                    <input className="form-input" value={formData.image_url||''} onChange={e => setFormData({...formData, image_url: e.target.value})} />
+                    {formData.image_url && (
+                      <div className="mt-4 rounded-2xl overflow-hidden border border-slate-800 bg-slate-950 aspect-square w-32">
+                        <img src={formData.image_url} alt="Preview" className="w-full h-full object-cover" />
+                      </div>
+                    )}
+                  </div>
                 </div>
                 <div><label className="form-label">Detail Prestasi</label><textarea className="form-input" rows={4} value={formData.description||''} onChange={e => setFormData({...formData, description: e.target.value})} /></div>
               </>)}
 
               {/* GALLERY FORM */}
               {formType === 'gallery' && (<>
-                <div><label className="form-label">URL Foto Galeri (Direct Link) *</label><input required className="form-input" placeholder="https://images.unsplash.com/..." value={formData.image_url||''} onChange={e => setFormData({...formData, image_url: e.target.value})} /></div>
+                <div>
+                  <label className="form-label">URL Foto Galeri (Direct Link) *</label>
+                  <input required className="form-input" placeholder="https://images.unsplash.com/..." value={formData.image_url||''} onChange={e => setFormData({...formData, image_url: e.target.value})} />
+                  {formData.image_url && (
+                    <div className="mt-4 rounded-2xl overflow-hidden border border-slate-800 bg-slate-950 aspect-video">
+                      <img src={formData.image_url} alt="Preview" className="w-full h-full object-cover" />
+                    </div>
+                  )}
+                </div>
                 <div className="grid grid-cols-2 gap-6">
                   <div><label className="form-label">Keterangan Foto</label><input className="form-input" placeholder="Foto saat upacara" value={formData.title||''} onChange={e => setFormData({...formData, title: e.target.value})} /></div>
                   <div><label className="form-label">Kategori Album</label><input className="form-input" placeholder="Sarana / Siswa / Prestasi" value={formData.category||'Umum'} onChange={e => setFormData({...formData, category: e.target.value})} /></div>
