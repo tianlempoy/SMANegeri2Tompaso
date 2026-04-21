@@ -502,7 +502,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                     <div key={item.id} className="bg-slate-900/40 p-6 rounded-3xl border border-slate-800 hover:border-amber-500/40 transition-all flex items-center gap-6 group">
                       {(item.image_url || item.photo_url) && (
                         <div className="w-20 h-20 rounded-2xl overflow-hidden border border-slate-700 bg-slate-950 flex-shrink-0">
-                          <img src={item.image_url || item.photo_url} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
+                          <img src={item.image_url || item.photo_url} className="w-full h-full object-cover transition-all duration-500" />
                         </div>
                       )}
                       
@@ -1025,5 +1025,3 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
 };
 
 export default AdminDashboard;
-
-
