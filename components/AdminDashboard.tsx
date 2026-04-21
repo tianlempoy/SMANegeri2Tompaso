@@ -140,9 +140,9 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
 
   const getDefaultForm = (type: TabType) => {
     const defaults: any = {
-      berita: { title: '', category: 'Pendidikan', excerpt: '', content: '', image_url: '', author_name: 'Admin' },
+      berita: { title: '', category: 'Pendidikan', excerpt: '', content: '', image_url: '', author_name: 'Admin', date: '' },
       jadwal: { title: '', day: '', start_time: '', end_time: '', description: '', type: 'daily' },
-      pengumuman: { title: '', content: '', priority: 'medium', status: 'active' },
+      pengumuman: { title: '', content: '', priority: 'medium', status: 'active', date: '' },
       teachers: { nama: '', nip: '', spesialisasi: '', email: '', phone: '', photo_url: '', jabatan: 'Guru', status: 'aktif' },
       osis: { nama: '', jabatan: 'Anggota', kelas: '', email: '', phone: '', photo_url: '', masa_jabatan: '2025/2026', status: 'aktif' },
       activities: { title: '', date: '', description: '', image_url: '', location: '', category: 'Ekskul' },
@@ -821,8 +821,9 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                       {['Pendidikan','Prestasi','Kegiatan Siswa','Agenda Sekolah','Pengumuman'].map(c => <option key={c}>{c}</option>)}
                     </select>
                   </div>
-                  <div><label className="form-label">Penulis</label><input className="form-input" value={formData.author_name||''} onChange={e => setFormData({...formData, author_name: e.target.value})} /></div>
+                  <div><label className="form-label">Tanggal Publikasi</label><input type="date" className="form-input" value={formData.date||''} onChange={e => setFormData({...formData, date: e.target.value})} /></div>
                 </div>
+                <div><label className="form-label">Penulis</label><input className="form-input" value={formData.author_name||''} onChange={e => setFormData({...formData, author_name: e.target.value})} /></div>
                 <div><label className="form-label">Ringkasan Singkat</label><textarea className="form-input" rows={3} value={formData.excerpt||''} onChange={e => setFormData({...formData, excerpt: e.target.value})} /></div>
                 <div><label className="form-label">Isi Lengkap *</label><textarea required className="form-input" rows={8} value={formData.content||''} onChange={e => setFormData({...formData, content: e.target.value})} /></div>
                 <div>
@@ -837,6 +838,22 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                     </div>
                   )}
                 </div>
+              </>)}
+              
+              {/* PENGUMUMAN FORM */}
+              {formType === 'pengumuman' && (<>
+                <div><label className="form-label">Judul Pengumuman *</label><input required className="form-input" value={formData.title||''} onChange={e => setFormData({...formData, title: e.target.value})} /></div>
+                <div className="grid grid-cols-2 gap-6">
+                  <div><label className="form-label">Prioritas</label>
+                    <select className="form-input" value={formData.priority||'medium'} onChange={e => setFormData({...formData, priority: e.target.value})}>
+                      <option value="high">Tinggi (Merah)</option>
+                      <option value="medium">Sedang (Kuning)</option>
+                      <option value="low">Rendah (Biru)</option>
+                    </select>
+                  </div>
+                  <div><label className="form-label">Tanggal Publikasi</label><input type="date" className="form-input" value={formData.date||''} onChange={e => setFormData({...formData, date: e.target.value})} /></div>
+                </div>
+                <div><label className="form-label">Isi Pengumuman *</label><textarea required className="form-input" rows={6} value={formData.content||''} onChange={e => setFormData({...formData, content: e.target.value})} /></div>
               </>)}
 
               {/* TEACHERS FORM */}
@@ -1002,3 +1019,4 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
 };
 
 export default AdminDashboard;
+
