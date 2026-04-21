@@ -120,7 +120,7 @@ const NewsSection: React.FC<{ isFullPage?: boolean }> = ({ isFullPage = false })
                   <img 
                     src={featuredNews.image_url} 
                     alt={featuredNews.title} 
-                    className="w-full h-full object-cover transition-all duration-700 lg:grayscale group-hover:grayscale-0 group-hover:scale-105" 
+                    className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" 
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0A0F1E]/70 via-transparent to-transparent opacity-90 lg:opacity-60"></div>
                   
@@ -161,7 +161,7 @@ const NewsSection: React.FC<{ isFullPage?: boolean }> = ({ isFullPage = false })
                     onClick={() => setSelectedNews(item)}
                    >
                      <div className="shrink-0 w-20 h-20 lg:w-40 lg:h-40 rounded-[20px] lg:rounded-[35px] overflow-hidden bg-gradient-to-br from-white to-blue-50/50 border border-blue-100/50 group-active:rotate-3 transition-transform">
-                        <img src={item.image_url} className="w-full h-full object-cover transition-all duration-700 lg:grayscale group-hover:grayscale-0" alt="" />
+                        <img src={item.image_url} className="w-full h-full object-cover transition-all duration-700" alt="" />
                      </div>
                      <div className="space-y-1 lg:space-y-4 pt-1">
                         <span className="text-[7px] lg:text-[9px] font-black text-[#D4AF37] uppercase tracking-[0.2em] lg:tracking-[0.4em]">{item.category}</span>
@@ -295,7 +295,7 @@ const NewsSection: React.FC<{ isFullPage?: boolean }> = ({ isFullPage = false })
                         className="group cursor-pointer space-y-4"
                       >
                         <div className="aspect-[16/10] overflow-hidden rounded-[24px] bg-gray-100">
-                          <img src={related.image_url} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 scale-105 group-hover:scale-110" alt="" />
+                          <img src={related.image_url} className="w-full h-full object-cover transition-all duration-500 scale-105 group-hover:scale-110" alt="" />
                         </div>
                         <h4 className="font-bold text-gray-900 group-hover:text-[#D4AF37] transition-colors leading-tight">{related.title}</h4>
                       </div>
