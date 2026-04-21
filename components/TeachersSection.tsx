@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { User, Award, GraduationCap, Briefcase, Loader2, FileText, Send, ArrowUpRight, CloudUpload } from 'lucide-react';
 import { SCHOOL_ASSETS } from '../constants/assets';
 import { SCHOOL_THEME } from '../constants/theme';
+import { fetchTeachersRealtime } from '../lib/actions';
 
 interface Teacher {
   name: string;
@@ -56,7 +57,7 @@ const TeacherCard: React.FC<{ teacher: Teacher }> = ({ teacher }) => {
                 </div>
               )}
               <img 
-                src={SCHOOL_ASSETS.PRINCIPAL_PHOTO} 
+                src={teacher.photo || SCHOOL_ASSETS.PRINCIPAL_PHOTO} 
                 alt={teacher.name}
                 onLoad={() => setImgLoading(false)}
                 className={`w-full h-full object-cover object-top transition-opacity duration-700 ${imgLoading ? 'opacity-0' : 'opacity-100'}`}
@@ -118,10 +119,34 @@ const TeacherCard: React.FC<{ teacher: Teacher }> = ({ teacher }) => {
 };
 
 const TeachersSection: React.FC = () => {
-  // Tampilkan DEFAULT_TEACHERS langsung — tidak bergantung Supabase
-  // Data ini sudah sesuai Daftar Nominatif resmi SMAN 2 Tompaso
-  const [teachers] = useState<Teacher[]>(DEFAULT_TEACHERS);
-  const loading = false;
+  const [teachers, setTeachers] = useState<Teacher[]>(DEFAULT_TEACHERS);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const unsubscribe = fetchTeachersRealtime((data) => {
+      if (data && data.length > 0) {
+        const mapped: Teacher[] = data.map(item => {
+          let type: 'kepala' | 'guru' | 'staf' = 'guru';
+          const jabatan = (item.jabatan || '').toLowerCase();
+          if (jabatan.includes('kepala sekolah')) type = 'kepala';
+          else if (jabatan.includes('staf') || jabatan.includes('tu')) type = 'staf';
+          
+          return {
+            name: item.nama,
+            role: item.jabatan + (item.spesialisasi ? ` - ${item.spesialisasi}` : ''),
+            type,
+            photo: item.photo_url || ''
+          };
+        });
+        setTeachers(mapped);
+      }
+      setLoading(false);
+    });
+
+    return () => {
+      if (unsubscribe) unsubscribe();
+    };
+  }, []);
 
   const kepala = teachers.find(t => t.type === 'kepala');
   const guru = teachers.filter(t => t.type === 'guru');
