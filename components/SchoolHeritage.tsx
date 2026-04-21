@@ -45,7 +45,7 @@ const SchoolHeritage: React.FC = () => {
                 <img 
                   src="https://images.unsplash.com/photo-1596402184320-417d7178b2cd?q=80&w=2070&auto=format&fit=crop" 
                   alt="Situs Pinabetengan" 
-                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 transform group-hover:scale-110"
+                  className="w-full h-full object-cover transition-all duration-1000 transform group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-[#0A0F1E]/20 group-hover:bg-transparent transition-colors"></div>
              </div>
