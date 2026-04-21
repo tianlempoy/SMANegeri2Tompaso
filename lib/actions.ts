@@ -33,6 +33,11 @@ const saveToStorage = (key: string, data: any) => {
   localStorage.setItem(key, JSON.stringify(data));
 };
 
+const sanitizeUrl = (url: string) => {
+  if (!url) return '';
+  return url.replace(/^["']|["']$/g, '').trim();
+};
+
 export const apiLogActivity = async (user: string, action: string, details: string) => {
   console.log(`📝 [LOG] ${user}: ${action} - ${details}`);
   
@@ -202,14 +207,17 @@ export const fetchNews = async () => {
   return { data: getFromStorage(STORAGE_KEYS.NEWS), error: null };
 };
 
-export const insertNews = async (news: Omit<NewsItem, 'id' | 'date'>) => {
-  // Buat item baru, ID biarkan ditangani DB jika pakai Supabase
-  const newItem: any = { ...news };
+export const insertNews = async (news: any) => {
+  const newItem = { ...news };
+  if (newItem.image_url) newItem.image_url = sanitizeUrl(newItem.image_url);
+  
+  // Backup date field and remove from Supabase payload to avoid "column not found" error
+  const customDate = newItem.date;
   
   if (!isSupabaseConfigured()) {
     newItem.id = Date.now().toString();
     newItem.created_at = new Date().toISOString();
-    newItem.date = formatDate(newItem.created_at);
+    newItem.date = customDate || formatDate(newItem.created_at);
     
     const items = getFromStorage(STORAGE_KEYS.NEWS);
     items.unshift(newItem);
@@ -218,11 +226,20 @@ export const insertNews = async (news: Omit<NewsItem, 'id' | 'date'>) => {
   }
 
   try {
-    const { data, error } = await supabase!
-      .from('berita')
-      .insert([newItem])
-      .select();
+    // If user provided a date, try to set created_at to it (ISO format)
+    const supabasePayload = { ...newItem };
+    delete supabasePayload.date; // Critical: avoid schema error
     
+    if (customDate) {
+      try {
+        const d = new Date(customDate);
+        if (!isNaN(d.getTime())) {
+          supabasePayload.created_at = d.toISOString();
+        }
+      } catch (e) {}
+    }
+
+    const { data, error } = await supabase!.from('berita').insert([supabasePayload]).select();
     if (error) throw error;
     return { data, error: null };
   } catch (err: any) {
@@ -232,15 +249,33 @@ export const insertNews = async (news: Omit<NewsItem, 'id' | 'date'>) => {
 };
 
 export const updateNews = async (id: string | number, news: any) => {
+  const updatedItem = { ...news };
+  if (updatedItem.image_url) updatedItem.image_url = sanitizeUrl(updatedItem.image_url);
+  
   if (isSupabaseConfigured()) {
-    const { data, error } = await supabase!.from('berita').update(news).eq('id', id).select();
+    const supabasePayload = { ...updatedItem };
+    const customDate = supabasePayload.date;
+    delete supabasePayload.date;
+    delete supabasePayload.id;
+    delete supabasePayload.created_at;
+
+    if (customDate) {
+      try {
+        const d = new Date(customDate);
+        if (!isNaN(d.getTime())) {
+          supabasePayload.created_at = d.toISOString();
+        }
+      } catch (e) {}
+    }
+
+    const { data, error } = await supabase!.from('berita').update(supabasePayload).eq('id', id).select();
     return { data, error };
   }
 
   const items = getFromStorage(STORAGE_KEYS.NEWS);
   const index = items.findIndex((item: any) => item.id === id.toString());
   if (index >= 0) {
-    items[index] = { ...items[index], ...news, updated_at: new Date().toISOString() };
+    items[index] = { ...items[index], ...updatedItem, updated_at: new Date().toISOString() };
     saveToStorage(STORAGE_KEYS.NEWS, items);
     return { data: [items[index]], error: null };
   }
@@ -386,9 +421,12 @@ export const fetchAnnouncements = async () => {
 
 export const insertAnnouncement = async (ann: any) => {
   const newItem = { ...ann };
+  const customDate = newItem.date;
+  
   if (!isSupabaseConfigured()) {
     newItem.id = Date.now().toString();
     newItem.created_at = new Date().toISOString();
+    newItem.date = customDate || formatDate(newItem.created_at);
     const items = getFromStorage(STORAGE_KEYS.ANNOUNCEMENTS);
     items.push(newItem);
     saveToStorage(STORAGE_KEYS.ANNOUNCEMENTS, items);
@@ -396,7 +434,17 @@ export const insertAnnouncement = async (ann: any) => {
   }
 
   try {
-    const { data, error } = await supabase!.from('pengumuman').insert([newItem]).select();
+    const supabasePayload = { ...newItem };
+    delete supabasePayload.date;
+    
+    if (customDate) {
+      try {
+        const d = new Date(customDate);
+        if (!isNaN(d.getTime())) supabasePayload.created_at = d.toISOString();
+      } catch (e) {}
+    }
+
+    const { data, error } = await supabase!.from('pengumuman').insert([supabasePayload]).select();
     if (error) throw error;
     return { data, error: null };
   } catch (err: any) {
@@ -406,11 +454,29 @@ export const insertAnnouncement = async (ann: any) => {
 };
 
 export const updateAnnouncement = async (id: any, ann: any) => {
-  if (isSupabaseConfigured()) return await supabase!.from('pengumuman').update(ann).eq('id', id).select();
+  const updatedItem = { ...ann };
+  
+  if (isSupabaseConfigured()) {
+    const supabasePayload = { ...updatedItem };
+    const customDate = supabasePayload.date;
+    delete supabasePayload.date;
+    delete supabasePayload.id;
+    delete supabasePayload.created_at;
+
+    if (customDate) {
+      try {
+        const d = new Date(customDate);
+        if (!isNaN(d.getTime())) supabasePayload.created_at = d.toISOString();
+      } catch (e) {}
+    }
+
+    return await supabase!.from('pengumuman').update(supabasePayload).eq('id', id).select();
+  }
+  
   const items = getFromStorage(STORAGE_KEYS.ANNOUNCEMENTS);
   const idx = items.findIndex((i: any) => i.id === id.toString());
   if (idx >= 0) {
-    items[idx] = { ...items[idx], ...ann };
+    items[idx] = { ...items[idx], ...updatedItem };
     saveToStorage(STORAGE_KEYS.ANNOUNCEMENTS, items);
     return { data: [items[idx]], error: null };
   }
@@ -441,20 +507,30 @@ export const fetchTeachers = async () => {
 };
 
 export const insertTeacher = async (teacher: any) => {
-  if (isSupabaseConfigured()) return await supabase!.from('teachers').insert([teacher]).select();
+  const newItem = { ...teacher };
+  if (newItem.photo_url) newItem.photo_url = sanitizeUrl(newItem.photo_url);
+  
+  if (isSupabaseConfigured()) return await supabase!.from('teachers').insert([newItem]).select();
   const items = getFromStorage(STORAGE_KEYS.TEACHERS);
-  const newItem = { ...teacher, id: Date.now().toString() };
+  newItem.id = Date.now().toString();
   items.push(newItem);
   saveToStorage(STORAGE_KEYS.TEACHERS, items);
   return { data: [newItem], error: null };
 };
 
 export const updateTeacher = async (id: any, teacher: any) => {
-  if (isSupabaseConfigured()) return await supabase!.from('teachers').update(teacher).eq('id', id).select();
+  const updatedItem = { ...teacher };
+  if (updatedItem.photo_url) updatedItem.photo_url = sanitizeUrl(updatedItem.photo_url);
+  
+  if (isSupabaseConfigured()) {
+    const supabasePayload = { ...updatedItem };
+    delete supabasePayload.id;
+    return await supabase!.from('teachers').update(supabasePayload).eq('id', id).select();
+  }
   const items = getFromStorage(STORAGE_KEYS.TEACHERS);
   const idx = items.findIndex((i: any) => i.id === id.toString());
   if (idx >= 0) {
-    items[idx] = { ...items[idx], ...teacher };
+    items[idx] = { ...items[idx], ...updatedItem };
     saveToStorage(STORAGE_KEYS.TEACHERS, items);
     return { data: [items[idx]], error: null };
   }
@@ -485,20 +561,30 @@ export const fetchOSIS = async () => {
 };
 
 export const insertOSIS = async (member: any) => {
-  if (isSupabaseConfigured()) return await supabase!.from('osis_members').insert([member]).select();
+  const newItem = { ...member };
+  if (newItem.photo_url) newItem.photo_url = sanitizeUrl(newItem.photo_url);
+  
+  if (isSupabaseConfigured()) return await supabase!.from('osis_members').insert([newItem]).select();
   const items = getFromStorage(STORAGE_KEYS.OSIS);
-  const newItem = { ...member, id: Date.now().toString() };
+  newItem.id = Date.now().toString();
   items.push(newItem);
   saveToStorage(STORAGE_KEYS.OSIS, items);
   return { data: [newItem], error: null };
 };
 
 export const updateOSIS = async (id: any, member: any) => {
-  if (isSupabaseConfigured()) return await supabase!.from('osis_members').update(member).eq('id', id).select();
+  const updatedItem = { ...member };
+  if (updatedItem.photo_url) updatedItem.photo_url = sanitizeUrl(updatedItem.photo_url);
+  
+  if (isSupabaseConfigured()) {
+    const supabasePayload = { ...updatedItem };
+    delete supabasePayload.id;
+    return await supabase!.from('osis_members').update(supabasePayload).eq('id', id).select();
+  }
   const items = getFromStorage(STORAGE_KEYS.OSIS);
   const idx = items.findIndex((i: any) => i.id === id.toString());
   if (idx >= 0) {
-    items[idx] = { ...items[idx], ...member };
+    items[idx] = { ...items[idx], ...updatedItem };
     saveToStorage(STORAGE_KEYS.OSIS, items);
     return { data: [items[idx]], error: null };
   }
@@ -530,6 +616,8 @@ export const fetchActivities = async () => {
 
 export const insertActivity = async (activity: any) => {
   const newItem = { ...activity };
+  if (newItem.image_url) newItem.image_url = sanitizeUrl(newItem.image_url);
+  
   if (!isSupabaseConfigured()) {
     newItem.id = Date.now().toString();
     newItem.created_at = new Date().toISOString();
@@ -549,11 +637,18 @@ export const insertActivity = async (activity: any) => {
 };
 
 export const updateActivity = async (id: any, activity: any) => {
-  if (isSupabaseConfigured()) return await supabase!.from('kegiatan').update(activity).eq('id', id).select();
+  const updatedItem = { ...activity };
+  if (updatedItem.image_url) updatedItem.image_url = sanitizeUrl(updatedItem.image_url);
+  
+  if (isSupabaseConfigured()) {
+    const supabasePayload = { ...updatedItem };
+    delete supabasePayload.id;
+    return await supabase!.from('kegiatan').update(supabasePayload).eq('id', id).select();
+  }
   const items = getFromStorage(STORAGE_KEYS.KEGIATAN);
   const idx = items.findIndex((i: any) => i.id === id.toString());
   if (idx >= 0) {
-    items[idx] = { ...items[idx], ...activity };
+    items[idx] = { ...items[idx], ...updatedItem };
     saveToStorage(STORAGE_KEYS.KEGIATAN, items);
     return { data: [items[idx]], error: null };
   }
@@ -639,6 +734,8 @@ export const fetchGallery = async () => {
 
 export const insertGallery = async (gallery: any) => {
   const newItem = { ...gallery };
+  if (newItem.image_url) newItem.image_url = sanitizeUrl(newItem.image_url);
+  
   if (!isSupabaseConfigured()) {
     newItem.id = Date.now().toString();
     newItem.created_at = new Date().toISOString();
@@ -656,11 +753,18 @@ export const insertGallery = async (gallery: any) => {
   }
 };
 export const updateGallery = async (id: any, gallery: any) => {
-  if (isSupabaseConfigured()) return await supabase!.from('galeri').update(gallery).eq('id', id).select();
+  const updatedItem = { ...gallery };
+  if (updatedItem.image_url) updatedItem.image_url = sanitizeUrl(updatedItem.image_url);
+  
+  if (isSupabaseConfigured()) {
+    const supabasePayload = { ...updatedItem };
+    delete supabasePayload.id;
+    return await supabase!.from('galeri').update(supabasePayload).eq('id', id).select();
+  }
   const items = getFromStorage(STORAGE_KEYS.GALERI);
   const idx = items.findIndex((i: any) => i.id === id.toString());
   if (idx >= 0) {
-    items[idx] = { ...items[idx], ...gallery };
+    items[idx] = { ...items[idx], ...updatedItem };
     saveToStorage(STORAGE_KEYS.GALERI, items);
     return { data: [items[idx]], error: null };
   }
