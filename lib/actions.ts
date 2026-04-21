@@ -1,3 +1,5 @@
+// Cari bagian BERITA di lib/actions.ts dan ganti dengan ini:
+
 export const insertNews = async (news: any) => {
   const newItem = { ...news };
   if (newItem.image_url) newItem.image_url = sanitizeUrl(newItem.image_url);
@@ -5,7 +7,6 @@ export const insertNews = async (news: any) => {
   if (!isSupabaseConfigured()) {
     newItem.id = Date.now().toString();
     newItem.created_at = new Date().toISOString();
-    newItem.date = newItem.date || formatDate(newItem.created_at);
     const items = getFromStorage(STORAGE_KEYS.NEWS);
     items.unshift(newItem);
     saveToStorage(STORAGE_KEYS.NEWS, items);
@@ -13,7 +14,7 @@ export const insertNews = async (news: any) => {
   }
 
   try {
-    // PEMETAAN EKSPLISIT: Hanya kolom ini yang dikirim ke Supabase
+    // HANYA kolom ini yang dikirim. 'date' TIDAK ADA DISINI.
     const payload: any = {
       title: newItem.title,
       category: newItem.category,
@@ -23,15 +24,13 @@ export const insertNews = async (news: any) => {
       author_name: newItem.author_name || 'Admin',
     };
 
-    // Jika ada tanggal kustom, masukkan ke created_at
     if (newItem.date) {
       const d = new Date(newItem.date);
-      if (!isNaN(d.getTime())) {
-        payload.created_at = d.toISOString();
-      }
+      if (!isNaN(d.getTime())) payload.created_at = d.toISOString();
     }
 
-    const { data, error } = await supabase!.from('berita').insert([payload]).select();
+    // Hanya select 'id' agar tidak memicu error cache schema
+    const { data, error } = await supabase!.from('berita').insert([payload]).select('id');
     if (error) throw error;
     return { data, error: null };
   } catch (err: any) {
@@ -45,7 +44,7 @@ export const updateNews = async (id: string | number, news: any) => {
   if (updatedItem.image_url) updatedItem.image_url = sanitizeUrl(updatedItem.image_url);
   
   if (isSupabaseConfigured()) {
-    // PEMETAAN EKSPLISIT: Memastikan 'date' tidak ikut terkirim
+    // HANYA kolom ini yang diupdate.
     const payload: any = {
       title: updatedItem.title,
       category: updatedItem.category,
@@ -57,12 +56,11 @@ export const updateNews = async (id: string | number, news: any) => {
 
     if (updatedItem.date) {
       const d = new Date(updatedItem.date);
-      if (!isNaN(d.getTime())) {
-        payload.created_at = d.toISOString();
-      }
+      if (!isNaN(d.getTime())) payload.created_at = d.toISOString();
     }
 
-    const { data, error } = await supabase!.from('berita').update(payload).eq('id', id).select();
+    // Hanya select 'id' agar tidak memicu error cache schema
+    const { data, error } = await supabase!.from('berita').update(payload).eq('id', id).select('id');
     return { data, error };
   }
 
