@@ -8,7 +8,7 @@ import { NewsItem, Page, Announcement, Teacher, OSISMember, Activity, Achievemen
 
 // ===================== HELPERS =====================
 
-const STORAGE_KEYS = {
+export const STORAGE_KEYS = {
   NEWS: 'sman2t_news',
   SCHEDULES: 'sman2t_schedules',
   ANNOUNCEMENTS: 'sman2t_announcements',
@@ -24,16 +24,16 @@ const STORAGE_KEYS = {
   SETTINGS: 'sman2t_settings'
 };
 
-const getFromStorage = (key: string) => {
+export const getFromStorage = (key: string) => {
   const data = localStorage.getItem(key);
   return data ? JSON.parse(data) : [];
 };
 
-const saveToStorage = (key: string, data: any) => {
+export const saveToStorage = (key: string, data: any) => {
   localStorage.setItem(key, JSON.stringify(data));
 };
 
-const sanitizeUrl = (url: string) => {
+export const sanitizeUrl = (url: string) => {
   if (!url) return '';
   return url.replace(/^["']|["']$/g, '').trim();
 };
